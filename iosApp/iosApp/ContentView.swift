@@ -3,7 +3,7 @@ import shared
 
 struct ContentView: View {
     let fileDownloader = FileDownloader(maxThreadCount: 5, validator: nil)
-    let url = "http://davinci-cdn.lilithgame.com/prod/assets/cjnisiit4afnled8a1s0"
+    let url = "your resource url"
     let outputPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         .appendingPathComponent("FileDownloader/sample.pak")
         .path
