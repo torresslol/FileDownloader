@@ -9,6 +9,7 @@ import io.ktor.client.plugins.onDownload
 import io.ktor.client.request.head
 import io.ktor.client.request.prepareGet
 import io.ktor.http.contentLength
+import io.ktor.http.isSuccess
 import io.ktor.util.collections.ConcurrentMap
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.CancellationException
@@ -64,6 +65,9 @@ class FileDownloader(
     // Get file info, including size and whether it supports range requests or not
     private suspend fun getFileInfo(url: String): FileInfo {
         val response = client.head(url)
+        if (!response.status.isSuccess()) {
+            throw GetFileInfoFailed("get file info request failed!")
+        }
         val fileSize = response.contentLength()
             ?: kotlin.run { throw GetFileInfoFailed("contentLength not found") }
         return FileInfo(fileSize, response.headers["Accept-Ranges"]?.contains("bytes") == true)
